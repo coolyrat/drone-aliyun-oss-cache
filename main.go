@@ -19,7 +19,7 @@ var (
 )
 
 func main() {
-	lg := initLogger()
+	//lg := initLogger()
 
 	//client, err := oss.New(endpoint, ak, sk)
 	//if err != nil {
