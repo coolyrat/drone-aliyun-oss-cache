@@ -8,12 +8,10 @@ steps:
       - ls
       - go env
       - pwd
-#      - ls $GOPATH/pkg/mod
       - export GO_VERSION=$(go version)
       - echo "my go version is " ${GO_VERSION}
       - echo "my go version is " $GO_VERSION
-      - "go build -v -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X main.goVersion=" $GO_VERSION " \" -o app ./main.go"
-#      - ls $GOPATH/pkg/mod
+      - "go build -v -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X main.goVersion=$GO_VERSION \" -o app ./main.go"
     environment:
       CGO_ENABLED: 0
       GOPROXY: https://athens.codework.tech
@@ -22,5 +20,4 @@ steps:
     image: golang:1.12.4-alpine3.9
     commands:
       - ls
-#      - ls $GOPATH/pkg/mod
       - ./drone-oss-cache
