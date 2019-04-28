@@ -31,7 +31,7 @@ func main() {
 	//	lg.Fatal("get bucketName error", zap.String("bucket", bucketName), zap.Error(err))
 	//}
 
-	lg.Info("ok", zap.String("bucket", bucket.BucketName))
+	//lg.Info("ok", zap.String("bucket", bucket.BucketName))
 	fmt.Println("GitVersion: ", GitVersion, " GoVersion: ", GoVersion)
 }
 
