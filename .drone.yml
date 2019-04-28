@@ -5,13 +5,8 @@ steps:
   - name: build
     image: golang:1.12.4-alpine3.9
     commands:
-      - ls
-      - go env
-      - pwd
       - export GO_VERSION=$(go version)
-      - echo "my go version is " ${GO_VERSION}
-      - echo "my go version is " $GO_VERSION
-      - go build -ldflags "-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X main.goVersion=$GO_VERSION" -o app ./main.go"
+      - "go build -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X 'main.goVersion=$GO_VERSION'\" -o drone-oss-cache ./main.go"
     environment:
       CGO_ENABLED: 0
       GOPROXY: https://athens.codework.tech
