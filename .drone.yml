@@ -1,0 +1,24 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build
+    image: golang:1.12.4-alpine3.9
+    commands:
+      - ls
+      - go env
+      - pwd
+      - ls $GOPATH/pkg/mod
+      - export GO_VERSION=$(go version)
+      - "go build -v -ldflags \"-X main.GitVersion=${DRONE_COMMIT_SHA:0:8} -X main.GoVersion=${GO_VERSION}  \" -o drone-oss-cache"
+      - ls $GOPATH/pkg/mod
+    environment:
+      CGO_ENABLED: 0
+      GOPROXY: https://athens.codework.tech
+
+  - name: test
+    image: golang:1.12.4-alpine3.9
+    commands:
+      - ls
+      - ls $GOPATH/pkg/mod
+      - ./drone-oss-cache

@@ -1,34 +1,38 @@
 package main
 
 import (
-	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"fmt"
 	"go.uber.org/zap"
 	"log"
 )
 
 const (
 	endpoint   = "oss-cn-shenzhen.aliyuncs.com"
-	ak         = "LTAIeqrJGFbG7IBh"
-	sk         = "3Vk6Cg7iKLov7MlcliSqYncLtEvk92"
 	bucketName = "drone-build-cache"
 	repo       = ""
 	debug      = true
 )
 
+var (
+	GitVersion = "unknown"
+	GoVersion  = "unknown"
+)
+
 func main() {
 	lg := initLogger()
 
-	client, err := oss.New(endpoint, ak, sk)
-	if err != nil {
-		lg.Fatal("ossClient create error", zap.Error(err))
-	}
-
-	bucket, err := client.Bucket(bucketName)
-	if err != nil {
-		lg.Fatal("get bucketName error", zap.String("bucket", bucketName), zap.Error(err))
-	}
+	//client, err := oss.New(endpoint, ak, sk)
+	//if err != nil {
+	//	lg.Fatal("ossClient create error", zap.Error(err))
+	//}
+	//
+	//bucket, err := client.Bucket(bucketName)
+	//if err != nil {
+	//	lg.Fatal("get bucketName error", zap.String("bucket", bucketName), zap.Error(err))
+	//}
 
 	lg.Info("ok", zap.String("bucket", bucket.BucketName))
+	fmt.Println("GitVersion: ", GitVersion, " GoVersion: ", GoVersion)
 }
 
 func initLogger() *zap.Logger {
