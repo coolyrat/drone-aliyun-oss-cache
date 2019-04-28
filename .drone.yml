@@ -10,7 +10,7 @@ steps:
       - pwd
 #      - ls $GOPATH/pkg/mod
       - export GO_VERSION=$(go version)
-      - "go build -v -ldflags \"-X main.GitVersion=${DRONE_COMMIT_SHA:0:8} -X main.GoVersion=$GO_VERSION \" -o drone-oss-cache"
+      - "go build -v -ldflags \"-X main.GitVersion=${DRONE_COMMIT_SHA:0:8} -X main.GoVersion=${GO_VERSION}  \" -o drone-oss-cache ./main.go"
 #      - ls $GOPATH/pkg/mod
     environment:
       CGO_ENABLED: 0
