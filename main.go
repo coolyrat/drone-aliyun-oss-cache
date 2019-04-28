@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go.uber.org/zap"
+	"gopkg.in/urfave/cli.v1"
 	"log"
 )
 
@@ -14,11 +15,18 @@ const (
 )
 
 var (
-	GitVersion = "unknown"
-	GoVersion  = "unknown"
+	gitVersion = "unknown"
+	goVersion  = "unknown"
 )
 
 func main() {
+	app := cli.NewApp()
+	app.Name = "oss cache plugin"
+	app.Version = gitVersion
+	app.Flags = []cli.Flag{
+		cli.StringFlag{},
+	}
+
 	//lg := initLogger()
 
 	//client, err := oss.New(endpoint, ak, sk)
@@ -32,7 +40,7 @@ func main() {
 	//}
 
 	//lg.Info("ok", zap.String("bucket", bucket.BucketName))
-	fmt.Println("GitVersion: ", GitVersion, " GoVersion: ", GoVersion)
+	fmt.Println("gitVersion: ", gitVersion, " goVersion: ", goVersion)
 }
 
 func initLogger() *zap.Logger {
