@@ -12,7 +12,7 @@ steps:
       - export GO_VERSION=$(go version)
       - echo "my go version is " ${GO_VERSION}
       - echo "my go version is " $GO_VERSION
-      - "go build -v -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X main.goVersion=${GO_VERSION}  \" -o drone-oss-cache ./main.go"
+      - "go build -v -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X main.goVersion=$GO_VERSION \" -o drone-oss-cache ./main.go"
 #      - ls $GOPATH/pkg/mod
     environment:
       CGO_ENABLED: 0
