@@ -2,17 +2,30 @@ kind: pipeline
 name: default
 
 steps:
+#  - name: restore
+  #    image: luischan/drone-oss-cache
+  #    settings:
+  #      endpoint: oss-cn-shenzhen.aliyuncs.com
+  #      access_key: xxx
+  #      secret_key: xxx
+  #      restore: true
+
   - name: build
     image: golang:1.12.4-alpine3.9
     commands:
       - export GO_VERSION=$(go version)
-      - "go build -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X 'main.goVersion=$GO_VERSION'\" -o drone-oss-cache ./main.go"
+      - "go build -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X 'main.goVersion=$GO_VERSION'\" -o drone-oss-cache"
+      - cat $GOPATH/pkg/mod
     environment:
       CGO_ENABLED: 0
       GOPROXY: https://athens.codework.tech
 
-  - name: test
-    image: golang:1.12.4-alpine3.9
-    commands:
-      - ls
-      - ./drone-oss-cache
+
+#  - name: flush
+#    image: luischan/drone-oss-cache
+#    settings:
+#      endpoint: oss-cn-shenzhen.aliyuncs.com
+#      access_key: xxx
+#      secret_key: xxx
+#      flush: true
+#      flush_age: 14

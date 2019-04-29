@@ -1,3 +1,3 @@
 FROM luischan/alpine:3.9
-COPY ./oa-suite /oa-suite
-ENTRYPOINT [ "/oa-suite" ]
+COPY ./drone-oss-cache /drone-oss-cache
+ENTRYPOINT [ "/drone-oss-cache" ]
