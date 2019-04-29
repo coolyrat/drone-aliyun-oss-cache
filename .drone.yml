@@ -20,6 +20,13 @@ steps:
       CGO_ENABLED: 0
       GOPROXY: https://athens.codework.tech
 
+  - name: test
+    image: golang:1.12.4-alpine3.9
+    commands:
+      - ls -a $GOPATH/pkg/mod
+    environment:
+      CGO_ENABLED: 0
+      GOPROXY: https://athens.codework.tech
 
 #  - name: flush
 #    image: luischan/drone-oss-cache
