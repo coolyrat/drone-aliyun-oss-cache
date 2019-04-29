@@ -16,8 +16,8 @@ steps:
       - export GO_VERSION=$(go version)
       - "go build -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X 'main.goVersion=$GO_VERSION'\" -o drone-oss-cache"
       - ls -a $GOPATH/pkg/mod
-      - ls -a $HOME/go/pkg/mod
       - ls -a
+      - go mod download -json
     environment:
       CGO_ENABLED: 0
       GOPROXY: https://athens.codework.tech
