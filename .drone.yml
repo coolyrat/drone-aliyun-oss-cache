@@ -13,6 +13,7 @@ steps:
       - "go build -ldflags \"-X main.gitVersion=${DRONE_COMMIT_SHA:0:8} -X 'main.goVersion=$GO_VERSION'\" -o drone-oss-cache"
     environment:
       CGO_ENABLED: 0
+      GOPROXY: https://athens.codework.tech
 
   - name: docker
     image: plugins/docker
