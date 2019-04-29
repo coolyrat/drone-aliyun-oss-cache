@@ -8,12 +8,6 @@ LDFLAGS := -X oa.eekui.group/oa-suite/pkg/version.GitVersion=$(GIT_COMMIT) \
 build:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o drone-oss-cache
 
-
 .PHONY: docker
 docker: build
 	docker build -t $(DOCKER_IMAGE) .
-#
-#.PHONY: push
-#push: docker
-#	docker push $(DOCKER_IMAGE):$(VERSION)
-#	docker push $(DOCKER_IMAGE):dev

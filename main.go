@@ -8,15 +8,6 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/urfave/cli.v1"
 	"os"
-	pathutil "path"
-	"strconv"
-)
-
-const (
-	endpoint   = "oss-cn-shenzhen.aliyuncs.com"
-	bucketName = "drone-build-cache"
-	repo       = ""
-	debug      = true
 )
 
 var (
@@ -151,12 +142,11 @@ func run(c *cli.Context) error {
 	// Determine the mode for the plugin
 	rebuild := c.Bool("rebuild")
 	restore := c.Bool("restore")
-	flush := c.Bool("flush")
 
-	if isMultipleModes(rebuild, restore, flush) {
-		return errors.New("Must use a single mode: rebuild, restore or flush")
-	} else if !rebuild && !restore && !flush {
-		return errors.New("No action specified")
+	if isMultipleModes(rebuild, restore) {
+		return errors.New("must use a single mode: rebuild or restore")
+	} else if !rebuild && !restore {
+		return errors.New("no action specified")
 	}
 
 	var mode string
@@ -167,25 +157,20 @@ func run(c *cli.Context) error {
 		mount = c.StringSlice("mount")
 
 		if len(mount) == 0 {
-			return errors.New("No mounts specified")
+			return errors.New("no mounts specified")
 		}
 
 		mode = RebuildMode
-	} else if flush {
-		mode = FlushMode
 	} else {
 		mode = RestoreMode
 	}
-
-	// Get the root path prefix to place the cache files
-	root := c.GlobalString("root")
 
 	// Get the path to place the cache files
 	path := c.GlobalString("path")
 
 	// Defaults to <owner>/<repo>/<branch>/
 	if len(path) == 0 {
-		log.Logger.Info("No path specified. Creating default")
+		log.Logger.Info("no path specified. Creating default")
 
 		path = fmt.Sprintf(
 			"%s/%s/%s",
@@ -193,48 +178,13 @@ func run(c *cli.Context) error {
 			c.String("repo.name"),
 			c.String("commit.branch"),
 		)
-
-		path = prefixRoot(root, path)
-	}
-
-	// Get the fallback path to retrieve the cache files
-	fallbackPath := c.GlobalString("fallback_path")
-
-	// Defaults to <owner>/<repo>/master/
-	if len(fallbackPath) == 0 {
-		log.Logger.Info("No fallback_path specified. Creating default")
-
-		fallbackPath = fmt.Sprintf(
-			"%s/%s/%s",
-			c.String("repo.owner"),
-			c.String("repo.name"),
-			c.String("repo.branch"),
-		)
-
-		fallbackPath = prefixRoot(root, fallbackPath)
-	}
-
-	// Get the flush path to flush the cache files from
-	flushPath := c.GlobalString("flush_path")
-
-	// Defaults to <owner>/<repo>/
-	if len(flushPath) == 0 {
-		log.Logger.Info("No flush_path specified. Creating default")
-
-		flushPath = fmt.Sprintf(
-			"%s/%s",
-			c.String("repo.owner"),
-			c.String("repo.name"),
-		)
-
-		flushPath = prefixRoot(root, flushPath)
 	}
 
 	// Get the filename
 	filename := c.GlobalString("filename")
 
 	if len(filename) == 0 {
-		log.Logger.Info("No filename specified. Creating default")
+		log.Logger.Info("no filename specified. Creating default")
 
 		filename = "archive.tar"
 	}
@@ -246,21 +196,12 @@ func run(c *cli.Context) error {
 		Bucket:   c.String("bucket"),
 	})
 
-	flushAge, err := strconv.Atoi(c.String("flush_age"))
-
-	if err != nil {
-		return err
-	}
-
 	p := &Plugin{
-		Filename:     filename,
-		Path:         path,
-		FallbackPath: fallbackPath,
-		FlushPath:    flushPath,
-		Mode:         mode,
-		FlushAge:     flushAge,
-		Mount:        mount,
-		Storage:      s,
+		Filename: filename,
+		Path:     path,
+		Mode:     mode,
+		Mount:    mount,
+		Storage:  s,
 	}
 
 	return p.Exec()
@@ -279,8 +220,4 @@ func isMultipleModes(bools ...bool) bool {
 	}
 
 	return false
-}
-
-func prefixRoot(root, path string) string {
-	return pathutil.Clean(fmt.Sprintf("/%s/%s", root, path))
 }

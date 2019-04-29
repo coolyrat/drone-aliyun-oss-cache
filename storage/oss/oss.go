@@ -69,31 +69,33 @@ func (s *ossStorage) Put(p string, src io.Reader) error {
 }
 
 func (s *ossStorage) List(p string) ([]storage.FileEntry, error) {
-	log.Logger.Info("oss listing", zap.String("path", p))
-	b, err := s.bucket.ListObjects(oss.Prefix(p))
-	if err != nil {
-		log.Logger.Error("error list object", zap.String("path", p), zap.Error(err))
-		return nil, err
-	}
-
-	ee := make([]storage.FileEntry, b.MaxKeys)
-	for i, o := range b.Objects {
-		ee[i] = storage.FileEntry{
-			Path:         o.Key,
-			Size:         o.Size,
-			LastModified: o.LastModified,
-		}
-	}
-	log.Logger.Info("oss list objects", zap.Reflect("objects", ee))
-
-	return ee, nil
+	panic("implement me")
+	//log.Logger.Info("oss listing", zap.String("path", p))
+	//b, err := s.bucket.ListObjects(oss.Prefix(p))
+	//if err != nil {
+	//	log.Logger.Error("error list object", zap.String("path", p), zap.Error(err))
+	//	return nil, err
+	//}
+	//
+	//ee := make([]storage.FileEntry, b.MaxKeys)
+	//for i, o := range b.Objects {
+	//	ee[i] = storage.FileEntry{
+	//		Path:         o.Key,
+	//		Size:         o.Size,
+	//		LastModified: o.LastModified,
+	//	}
+	//}
+	//log.Logger.Info("oss list objects", zap.Reflect("objects", ee))
+	//
+	//return ee, nil
 }
 
 func (s *ossStorage) Delete(p string) error {
-	log.Logger.Info("oss deleting", zap.String("path", p))
-	if err := s.bucket.DeleteObject(p); err != nil {
-		log.Logger.Error("error delete object", zap.String("path", p), zap.Error(err))
-		return err
-	}
-	return nil
+	panic("implement me")
+	//log.Logger.Info("oss deleting", zap.String("path", p))
+	//if err := s.bucket.DeleteObject(p); err != nil {
+	//	log.Logger.Error("error delete object", zap.String("path", p), zap.Error(err))
+	//	return err
+	//}
+	//return nil
 }
