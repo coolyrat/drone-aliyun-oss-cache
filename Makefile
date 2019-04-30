@@ -1,5 +1,5 @@
 DOCKER_IMAGE := luischan/drone-oss-cache:latest
-
+GIT_COMMIT := $(shell git rev-parse --short HEAD)
 LDFLAGS := -X oa.eekui.group/oa-suite/pkg/version.GitVersion=$(GIT_COMMIT) \
 	-X 'oa.eekui.group/oa-suite/pkg/version.GoVersion=$(shell go version)'
 
