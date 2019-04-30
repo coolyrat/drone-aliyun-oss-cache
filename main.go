@@ -196,6 +196,19 @@ func run(c *cli.Context) error {
 		Bucket:   c.String("bucket"),
 	})
 
+	debug := c.Bool("debug")
+	if debug {
+		log.Logger.Debug("plugin config",
+			zap.String("endpoint", c.String("endpoint")),
+			zap.String("ak", c.String("ak")),
+			zap.String("sk", c.String("sk")),
+			zap.String("bucket", c.String("bucket")),
+			zap.String("mount", c.String("mount")),
+			zap.String("path", path),
+			zap.String("mode", mode),
+			zap.String("filename", filename))
+	}
+
 	p := &Plugin{
 		Filename: filename,
 		Path:     path,

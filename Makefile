@@ -11,3 +11,7 @@ build:
 .PHONY: docker
 docker: build
 	docker build -t $(DOCKER_IMAGE) .
+
+.PHONY: push
+push: docker
+	docker push $(DOCKER_IMAGE)
