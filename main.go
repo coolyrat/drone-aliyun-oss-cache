@@ -83,13 +83,13 @@ func main() {
 		// Aliyun OSS information
 
 		cli.StringFlag{
-			Name:   "ak",
-			EnvVar: "PLUGIN_ACCESS_KEY",
+			Name:   "oss.ak",
+			EnvVar: "PLUGIN_ACCESS_KEY,OSS_AK",
 			Usage:  "Aliyun OSS access key",
 		},
 		cli.StringFlag{
-			Name:   "sk",
-			EnvVar: "PLUGIN_ACCESS_KEY_SECRET",
+			Name:   "oss.sk",
+			EnvVar: "PLUGIN_SECRET_KEY,OSS_SK",
 			Usage:  "Aliyun OSS access key secret",
 		},
 		cli.StringFlag{
@@ -191,8 +191,8 @@ func run(c *cli.Context) error {
 
 	s := oss.NewStorage(&oss.Config{
 		Endpoint: c.String("endpoint"),
-		AK:       c.String("ak"),
-		SK:       c.String("sk"),
+		AK:       c.String("oss.ak"),
+		SK:       c.String("oss.sk"),
 		Bucket:   c.String("bucket"),
 	})
 
@@ -200,8 +200,8 @@ func run(c *cli.Context) error {
 	if debug {
 		log.Logger.Debug("plugin config",
 			zap.String("endpoint", c.String("endpoint")),
-			zap.String("ak", c.String("ak")),
-			zap.String("sk", c.String("sk")),
+			zap.String("ak", c.String("oss.ak")),
+			zap.String("sk", c.String("oss.sk")),
 			zap.String("bucket", c.String("bucket")),
 			zap.String("mount", c.String("mount")),
 			zap.String("path", path),
